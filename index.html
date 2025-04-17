@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychometrica Pro Plus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="brain-icon"><i class="fas fa-brain"></i></div>
+            <h1>Psychometrica <span class="pro">Pro</span> Plus</h1>
+            <p class="tagline">Unlocking Potential, Shaping Futures</p>
+        </header>
+
+        <section id="login-section">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Enter username" aria-label="Username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter password" aria-label="Password" required>
+            </div>
+            <div class="button-group">
+                <button class="btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </div>
+        </section>
+
+        <section id="welcome-section" class="hidden"></section>
+
+        <section id="standard-selection" class="hidden">
+            <h2>Select Standard</h2>
+            <div class="form-group">
+                <label for="standard">Grade:</label>
+                <select id="standard" aria-label="Select Grade">
+                    <option value="">Select Grade</option>
+                    <option value="5">5th</option>
+                    <option value="6">6th</option>
+                    <option value="7">7th</option>
+                    <option value="8">8th</option>
+                    <option value="9">9th</option>
+                    <option value="10">10th</option>
+                </select>
+            </div>
+            <div class="button-group">
+                <button class="btn" onclick="showLanguageSelection()"><i class="fas fa-arrow-right"></i> Next</button>
+                <button class="btn secondary" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </section>
+
+        <section id="language-selection" class="hidden">
+            <h2>Select Language</h2>
+            <div class="button-group">
+                <button class="btn" onclick="startTest('english')"><i class="fas fa-globe"></i> English</button>
+                <button class="btn" onclick="startTest('marathi')"><i class="fas fa-globe"></i> मराठी</button>
+                <button class="btn secondary" onclick="goBack('language-selection')"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </section>
+
+        <section id="info-section" class="hidden">
+            <h2 id="info-title">Student Information</h2>
+            <div id="info-step"></div>
+            <div class="button-group">
+                <button class="btn secondary" id="info-back-btn" onclick="previousInfoStep()" style="display: none;"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="btn" id="info-next-btn" onclick="nextInfoStep()"><i class="fas fa-arrow-right"></i> Next</button>
+            </div>
+        </section>
+
+        <section id="instructions-section" class="hidden">
+            <h2 id="instructions-title">Instructions</h2>
+            <div id="instructions-content"></div>
+            <div class="button-group">
+                <button class="btn" onclick="showTest()"><i class="fas fa-play"></i> Start Test</button>
+                <button class="btn secondary" onclick="goBack('instructions-section')"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </section>
+
+        <section id="test-section" class="hidden">
+            <h2 id="test-title">Psychological Test</h2>
+            <div class="progress-container">
+                <p class="progress-label">Your Progress</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                </div>
+                <div class="progress-text" id="progress-text">Question 0 of 0</div>
+            </div>
+            <div id="questions"></div>
+            <div id="reward-message" class="hidden"></div>
+            <div class="button-group">
+                <button class="btn secondary" id="back-btn" onclick="previousQuestion()" style="display: none;"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;"><i class="fas fa-arrow-right"></i> Next</button>
+                <button class="btn" id="submit-btn" onclick="submitTest()" style="display: none;"><i class="fas fa-check"></i> Submit</button>
+            </div>
+        </section>
+
+        <section id="results-section" class="hidden">
+            <h2 id="results-title">Your Results</h2>
+            <div id="trophy-sign" class="hidden">🏆</div>
+            <div id="result-content"></div>
+            <div class="contact-message">
+                <p>For detailed discussion and counseling regarding your child's progress plan, please contact us. Share your result with admin now for further processing.</p>
+            </div>
+            <div class="button-group">
+                <button class="btn whatsapp-btn" onclick="shareOnWhatsApp()"><i class="fas fa-whatsapp"></i> Share on WhatsApp</button>
+                <button class="btn secondary" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button class="btn" onclick="copyResultCode()"><i class="fas fa-copy"></i> Copy Result</button>
+                <button class="btn" onclick="downloadCertificate()"><i class="fas fa-download"></i> Download Certificate</button>
+            </div>
+        </section>
+
+        <section id="admin-section" class="hidden">
+            <h2>Admin Dashboard</h2>
+            <div class="alert critical-warning" id="backup-alert-top">
+                <h4><i class="fas fa-exclamation-triangle"></i> Critical Data Storage Notice</h4>
+                <p><strong>Important:</strong> All student data and test results are stored locally in your browser's storage. This data is at risk of being permanently lost upon logout, browser closure, cache clearing, or device change. To prevent data loss, it is critical to <strong>immediately export all data to CSV</strong> using the provided export options below. Once data is cleared, it cannot be retrieved. Ensure regular backups to safeguard your records.</p>
+                <div class="warning-actions">
+                    <button class="btn" onclick="exportAllToExcel()"><i class="fas fa-file-export"></i> Export Results to CSV</button>
+                    <button class="btn" onclick="exportStudentInfoToCSV()"><i class="fas fa-file-export"></i> Export Student Info to CSV</button>
+                </div>
+            </div>
+            <div class="admin-controls">
+                <button class="btn" onclick="exportAllToExcel()"><i class="fas fa-file-export"></i> Export All to CSV</button>
+                <button class="btn secondary" onclick="clearReports()"><i class="fas fa-trash"></i> Clear Reports</button>
+                <button class="btn secondary" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+            <div class="admin-form">
+                <h3>Generate Student Development Plan</h3>
+                <div class="form-group">
+                    <label for="plan-student-name">Student's Name:</label>
+                    <input type="text" id="plan-student-name" placeholder="Enter student's name" aria-label="Student's Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="plan-age">Age:</label>
+                    <input type="number" id="plan-age" placeholder="Enter age" min="10" max="18" aria-label="Age" required>
+                </div>
+                <div class="form-group">
+                    <label for="plan-standard">Standard:</label>
+                    <select id="plan-standard" aria-label="Select Grade" required>
+                        <option value="">Select Grade</option>
+                        <option value="5">5th</option>
+                        <option value="6">6th</option>
+                        <option value="7">7th</option>
+                        <option value="8">8th</option>
+                        <option value="9">9th</option>
+                        <option value="10">10th</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="plan-score">Score (%):</label>
+                    <input type="number" id="plan-score" placeholder="Enter score (0-100)" min="0" max="100" aria-label="Score" required>
+                </div>
+                <div class="button-group">
+                    <button class="btn" onclick="generateDevelopmentPlan()"><i class="fas fa-cogs"></i> Generate Plan</button>
+                </div>
+            </div>
+            <div id="plan-content" class="hidden">
+                <h3>Development Plan</h3>
+                <div id="plan-text" style="white-space: pre-wrap; text-align: left; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;"></div>
+                <div class="button-group">
+                    <button class="btn" onclick="copyPlan()"><i class="fas fa-copy"></i> Copy Plan</button>
+                </div>
+            </div>
+            <div class="admin-form">
+                <h3>Student Information Form</h3>
+                <div class="form-group">
+                    <label for="info-student-name">Student's Name:</label>
+                    <input type="text" id="info-student-name" placeholder="Enter student's name" aria-label="Student's Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="info-parent-name">Parent's Name:</label>
+                    <input type="text" id="info-parent-name" placeholder="Enter parent's name" aria-label="Parent's Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="info-mobile">Mobile:</label>
+                    <input type="tel" id="info-mobile" placeholder="Enter mobile number" aria-label="Mobile" required>
+                </div>
+                <div class="form-group">
+                    <label for="info-email">Email:</label>
+                    <input type="email" id="info-email" placeholder="Enter email" aria-label="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="info-school">School Name:</label>
+                    <input type="text" id="info-school" placeholder="Enter school name" aria-label="School Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="info-age">Age:</label>
+                    <input type="number" id="info-age" placeholder="Enter age" min="10" max="18" aria-label="Age" required>
+                </div>
+                <div class="form-group">
+                    <label for="info-board">Board:</label>
+                    <select id="info-board" aria-label="Select Board" required>
+                        <option value="">Select Board</option>
+                        <option value="CBSE">CBSE</option>
+                        <option value="ICSE">ICSE</option>
+                        <option value="State">State Board</option>
+                        <option value="IB">IB</option>
+                        <option value="IGCSE">IGCSE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="info-standard">Standard:</label>
+                    <select id="info-standard" aria-label="Select Grade" required>
+                        <option value="">Select Grade</option>
+                        <option value="5">5th</option>
+                        <option value="6">6th</option>
+                        <option value="7">7th</option>
+                        <option value="8">8th</option>
+                        <option value="9">9th</option>
+                        <option value="10">10th</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="info-medium">Medium:</label>
+                    <select id="info-medium" aria-label="Select Medium" required>
+                        <option value="">Select Medium</option>
+                        <option value="English">English</option>
+                        <option value="Marathi">Marathi</option>
+                        <option value="Semi-English">Semi-English</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button class="btn" onclick="submitStudentInfo()"><i class="fas fa-save"></i> Submit</button>
+                </div>
+            </div>
+            <div id="student-info-content">
+                <h3>Student Information</h3>
+                <div class="alert critical-warning" id="backup-alert">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Critical Data Storage Notice</h4>
+                    <p><strong>Important:</strong> All student data and test results are stored locally in your browser's storage. This data is at risk of being permanently lost upon logout, browser closure, cache clearing, or device change. To prevent data loss, it is critical to <strong>immediately export all data to CSV</strong> using the provided export options below. Once data is cleared, it cannot be retrieved. Ensure regular backups to safeguard your records.</p>
+                    <div class="warning-actions">
+                        <button class="btn" onclick="exportAllToExcel()"><i class="fas fa-file-export"></i> Export Results to CSV</button>
+                        <button class="btn" onclick="exportStudentInfoToCSV()"><i class="fas fa-file-export"></i> Export Student Info to CSV</button>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn" onclick="exportStudentInfoToCSV()"><i class="fas fa-file-export"></i> Export Student Info to CSV</button>
+                    <button class="btn secondary" onclick="clearStudentInfo()"><i class="fas fa-trash"></i> Clear Student Info</button>
+                </div>
+                <table id="student-info-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Parent Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>School</th>
+                            <th>Age</th>
+                            <th>Board</th>
+                            <th>Standard</th>
+                            <th>Medium</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="admin-content"></div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="questions.js"></script>
+    <script src="results.js"></script>
+    <script src="plan.js"></script>
+    <script src="script.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'931c23a8491fbccb',t:'MTc0NDg5NTE4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
